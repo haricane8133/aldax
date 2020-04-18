@@ -25,8 +25,8 @@ Aldax takes 2 parameters,
 The input file contains Alda code and can contain Aldax based chord syntax. The chords will be parsed into pure Alda syntax by the program, which can then be played by Alda
 
 ```bash
-aldax <input-file-path> <output-file-path>
-alda play --file <output-file-path>
+aldax < input-file-path> < output-file-path>
+alda play --file < output-file-path>
 ```
 
 
@@ -34,12 +34,12 @@ alda play --file <output-file-path>
 
 Each chord within the Aldax code file, is represented in the following format
 
-<other-alda-code>/<chord>/<chord-base-note>/<duration>/<other-alda-code>
+< other-alda-code>/< chord>/< chord-base-note>/< duration>/< other-alda-code>
 
-* <other-alda-code> denotes Alda code that does not indicate a chord, that you may want to chain up with the chord
-* <chord> denotes a chord
-* <chord-base-note> is used for chord inversions
-* <duration> is the Alda based duration for the whole chord
+* < other-alda-code> denotes Alda code that does not indicate a chord, that you may want to chain up with the chord
+* < chord> denotes a chord
+* < chord-base-note> is used for chord inversions
+* < duration> is the Alda based duration for the whole chord
 
 Note: YOU NEED TO USE CAPITALS FOR THE "CHORD" AND THE "CHORD-BASE-NOTE". SEE THE EXAMPLES TO KNOW HOW
 
@@ -65,10 +65,10 @@ The chord types supported here are major, minor, dominant 7th, major 7th, minor 
 ### Full Syntax - aldax file contents
 
 #### Csus2/D/1/<d>
-This contains the major chord, with D as the base note, for a duration of 1 (Alda notation) and also has some Alda code at the end (<d>)
+This contains the major chord, with D as the base note, for a duration of 1 (Alda notation) and also has some Alda code at the end (< d>)
 
 #### C Am F G7
-This plays the classic <I vi IV V7> progression with C as tonic, at the default Alda duration
+This plays the classic < I vi IV V7> progression with C as tonic, at the default Alda duration
 
 
 ## Contributing
