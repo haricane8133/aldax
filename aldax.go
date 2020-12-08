@@ -160,6 +160,14 @@ func getNotes(tonicIndex int, formula []int, inversion int, extraAldaStuff1 stri
 		notesIndex = append(notesIndex, tmp)
 	}
 
+	if notesIndex[0] > 11 {
+		notesIndex[0] = notesIndex[0] - 12
+	}
+	for i := 1; i < len(notesIndex); i++ {
+		for notesIndex[i] < notesIndex[i-1] {
+			notesIndex[i] = notesIndex[i] + 12
+		}
+	}
 	for _, noteIndex := range notesIndex {
 		if noteIndex < 0 {
 			notes = append(notes, extraAldaStuff1+"<"+indiceToNote[noteIndex+12]+extraAldaStuff2+">")

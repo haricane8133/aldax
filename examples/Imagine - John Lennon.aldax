@@ -1,7 +1,7 @@
 (tempo! 72)
 
 # --> variables <--
-riff = C C C CM7 F(1) F(1) F(1) F(1)
+riff = C C C CM7 F(2) F(2) F(2) F(2)
 riffmain = e8/g8 c8 e8/g8 c8 e8/g8 c8 b8 >c8< f8/a8 c8/f8 f8/a8 c8/f8 f8/a8 c8/f8 a16 a+16 b16 r16
 
 # --> instruments <--
