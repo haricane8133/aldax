@@ -1,7 +1,7 @@
 # Aldax
 
-Aldax is a chord parser for the musical language Alda
-
+Aldax is a chord parser for the musical language [Alda](https://alda.io/)
+Chords are given easier syntax; Aldax converts into Alda digestable syntax
 
 ## Installation
 
@@ -18,9 +18,16 @@ go install
 
 For people who do not want to go through the above hassle, download the releases from the releases tab
 
+NOTE: You need to [install Alda](https://alda.io/install/) before proceeding.
+(After Aldax converts your musical score into Alda's format, you need to use Alda to play)
 
 ## Usage
 
+1. Write a musical score using Alda's syntax augmented with Aldax's chord syntax (given below)
+2. Run the musical score through Aldax (instructions given below)
+3. Give the output file to Alda to play your score (instructions given below)
+
+### Aldax Instructions
 Aldax takes 2 parameters,
 1. Path of the Aldax code file for input
 2. Path of an Alda code file for output
@@ -28,7 +35,10 @@ Aldax takes 2 parameters,
 The input file contains Alda code and can contain Aldax based chord syntax. The chords will be parsed into pure Alda syntax by the program, which can then be played by Alda
 
 ```bash
+# create Alda compatible score from your Aldax score
 aldax input-file-path output-file-path
+
+# play the converted Alda score
 alda play --file output-file-path
 ```
 
@@ -47,23 +57,25 @@ To learn how to write songs in Alda, have a look at the wonderful article series
 
 ## Aldax chord Syntax
 
-Each chord within the Aldax code file, is represented in the following format
+In your score, for chords alone, you can use Aldax's easy syntax. You are free to use the rest of Alda features in your score too
+
+Each chord within the Aldax score, is represented in the following format
 
 alda-code/chord(inversion)/alda-code
-* alda-code and inversion are optional. It is good to note that pure Alda provides you with more flexibility
-* Aldax provides you with an easy abstraction for chords
-* "chord" contains a capital letter denoting the chord tonic, followed by #, b, 7, etc. to specify the actual chord. Have a look at the chords supported for knowing what to use
-* For each chord, you can optionally specify an "inversion" in brackets (1-4)
-* The 1st <alda-code-optional> is prefixed to every note in the chord and the 2nd is suffixed to every note in the chord. You may use the 2nd <alda-code-optional> to specify the duration of every note played
 
-Note: YOU NEED TO USE CAPITALS FOR THE "CHORD". SEE THE EXAMPLES TO KNOW HOW
+* alda-code and inversion are optional
+* "chord" contains a capital letter denoting the chord tonic, followed by #, b, 7, etc. to specify the actual chord. Have a look at the Chords Notation below for knowing what to use
+* For each chord, you can optionally specify an "inversion" in brackets (1-4), to invert the chord. Aldax keeps the resultant chord's root at the current Octave and the rest of the notes follow after it
+* The 1st <alda-code> is prefixed to every note in the chord and the 2nd one is suffixed to every note in the chord. For instance, you may use the 2nd <alda-code> to specify the duration of every note played. (see the song examples in the [/examples](https://github.com/haricane8133/aldax/tree/master/examples) folder)
+
+Note
+1. You need a space to separate two chords or a chord from some other Alda code
+2. YOU NEED TO USE CAPITALS FOR THE "CHORD". SEE THE CHORD NOTATION and VOICINGS BELOW TO KNOW HOW
 
 The chord types supported here are major, minor, dominant 7th, major 7th, minor 7th, diminished, diminished 7th, augmented, suspended 2 and suspended 4. If you want more chords, then you are probably an expert who can tackle Alda directly XD
 
 
-## Examples
-
-### Chords
+## Chord Notation
 * Major        : CM, D#
 * Minor        : Am, Bbm
 * Dominant 7th : G7, D7
@@ -77,7 +89,7 @@ The chord types supported here are major, minor, dominant 7th, major 7th, minor 
 * Major 6th    : G6, DM6, A#6
 * Minor 6th    : Gm6, Dm6, A#m6
 
-### Full Syntax - aldax file contents
+## Chord Voicings
 
 #### Csus2(2)/1/
 This contains the C suspended 2 chord in the second inversion, for a duration of 1 (Alda notation)
@@ -85,9 +97,12 @@ This contains the C suspended 2 chord in the second inversion, for a duration of
 #### C Am F G7
 This plays the classic < I vi IV V7> progression with C as tonic, at the default Alda duration
 
+Note: There are song examples in the [/examples](https://github.com/haricane8133/aldax/tree/master/examples) folder
+
+
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Pull requests are welcome on Code changes, feature additions, song examples and anything else!
 
 
 ## License
