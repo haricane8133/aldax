@@ -28,8 +28,8 @@ Aldax takes 2 parameters,
 The input file contains Alda code and can contain Aldax based chord syntax. The chords will be parsed into pure Alda syntax by the program, which can then be played by Alda
 
 ```bash
-aldax < input-file-path> < output-file-path>
-alda play --file < output-file-path>
+aldax input-file-path output-file-path
+alda play --file output-file-path
 ```
 
 
