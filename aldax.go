@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/gookit/color"
@@ -41,7 +42,8 @@ func main() {
 
 func process() bool {
 	// This is the Regular Expression that matches a chord on the ALDAX notation
-	var re = regexp.MustCompile(`^([^\sCDEFGAB]+)?([CDEFGAB][#b]?)(7|M[247]?|m7?|aug|\+|dim7?|o7?|sus[24])?(\/[CDEFGAB][#b]?)?(\/\d+\.*)?(\/\S+)?$`)
+	// <alda-code-optional>/<chord>(inversion-optional)/<alda-code-optional>
+	var re = regexp.MustCompile(`^([^\sCDEFGAB]+)?([CDEFGAB][#b]?)(7|M[247]?|m7?|aug|\+|dim7?|o7?|sus[24])?(\([1-4]\))?(\/\S+)?$`)
 	// This contains the output that must be written to the file
 	var outputFileContents string
 	// splitting the file contents by new line
@@ -58,7 +60,7 @@ func process() bool {
 			if match != nil {
 				// Yes. The word is a chord from the ALDAX syntax
 				// W will convert the chord to an equivalent ALDA syntax
-				var success, chord = getAldaChord(match[1], match[2], match[3], match[4], match[5], match[6])
+				var success, chord = getAldaChord(match[1], match[2], match[3], match[4], match[5])
 				if !success {
 					return false
 				}
@@ -76,14 +78,15 @@ func process() bool {
 	return true
 }
 
-func getAldaChord(extraAldaStuff1, tonic, chordType, baseNote, duration, extraAldaStuff2 string) (bool, string) {
-	baseNote = strings.TrimPrefix(baseNote, "/")
-	duration = strings.TrimPrefix(duration, "/")
+func getAldaChord(extraAldaStuff1, tonic, chordType, inversionStr, extraAldaStuff2 string) (bool, string) {
+	extraAldaStuff1 = strings.TrimSuffix(extraAldaStuff1, "/")
+	inversionStr = strings.TrimPrefix(inversionStr, "(")
+	inversionStr = strings.TrimSuffix(inversionStr, ")")
+	inversion, _ := strconv.Atoi(inversionStr)
+	inversion = inversion % 4
 	extraAldaStuff2 = strings.TrimPrefix(extraAldaStuff2, "/")
 
 	var chord string = ""
-	chord += extraAldaStuff1
-
 	var success bool
 	var formula []int
 	success, formula = getChordFormula(chordType)
@@ -92,7 +95,7 @@ func getAldaChord(extraAldaStuff1, tonic, chordType, baseNote, duration, extraAl
 	}
 
 	var notes []string
-	success, notes = getNotes(noteToIndice[tonic], formula, noteToIndice[baseNote], duration)
+	success, notes = getNotes(noteToIndice[tonic], formula, inversion, extraAldaStuff1, extraAldaStuff2)
 	if !success || notes == nil {
 		return false, ""
 	}
@@ -100,10 +103,6 @@ func getAldaChord(extraAldaStuff1, tonic, chordType, baseNote, duration, extraAl
 		chord += note + "/"
 	}
 	chord = strings.TrimSuffix(chord, "/")
-
-	if extraAldaStuff2 != "" {
-		chord += "/" + extraAldaStuff2
-	}
 
 	return true, chord
 }
@@ -145,9 +144,9 @@ func getChordFormula(chordType string) (bool, []int) {
 	}
 }
 
-func getNotes(tonicIndex int, formula []int, baseNoteIndex int, duration string) (bool, []string) {
+func getNotes(tonicIndex int, formula []int, inversion int, extraAldaStuff1 string, extraAldaStuff2 string) (bool, []string) {
 	var notes []string
-	var notesIndex []int
+	notesIndex := []int{}
 
 	// computing and adding the the notes with the tonic and the formula
 	for _, addition := range formula {
@@ -155,23 +154,19 @@ func getNotes(tonicIndex int, formula []int, baseNoteIndex int, duration string)
 		notesIndex = append(notesIndex, noteIndex)
 	}
 
-	// If the base note supplied is the same as the tonic, don't do anything
-	if baseNoteIndex != -1 && baseNoteIndex != tonicIndex {
-		// If the base note supplied fits in the current octave as the lowest note, add it
-		if baseNoteIndex < notesIndex[0] {
-			notesIndex = append(notesIndex, baseNoteIndex)
-		} else {
-			notesIndex = append(notesIndex, baseNoteIndex-12)
-		}
+	for i := 0; i < inversion; i++ {
+		tmp := notesIndex[0]
+		notesIndex = notesIndex[1:]
+		notesIndex = append(notesIndex, tmp)
 	}
 
 	for _, noteIndex := range notesIndex {
 		if noteIndex < 0 {
-			notes = append(notes, "<"+indiceToNote[noteIndex+12]+duration+">")
+			notes = append(notes, extraAldaStuff1+"<"+indiceToNote[noteIndex+12]+extraAldaStuff2+">")
 		} else if noteIndex > 11 {
-			notes = append(notes, ">"+indiceToNote[noteIndex-12]+duration+"<")
+			notes = append(notes, extraAldaStuff1+">"+indiceToNote[noteIndex-12]+extraAldaStuff2+"<")
 		} else {
-			notes = append(notes, indiceToNote[noteIndex]+duration)
+			notes = append(notes, extraAldaStuff1+indiceToNote[noteIndex]+extraAldaStuff2)
 		}
 	}
 
@@ -186,10 +181,15 @@ func getCmdLineArgs() bool {
 	if noOfCmdLineArgs == 1 && cmdLineArgs[0] == "--help" {
 		fmt.Println("")
 		color.Yellow.Println("*SYNTAX*")
-		color.Green.Println("<other-alda-code>/<chord>/<chord-base-note>/<duration>/<other-alda-code>")
+		color.Yellow.Println("* for all the chords *")
+		color.Green.Println("<alda-code-optional>/<chord>(inversion-optional)/<alda-code-optional>")
 		fmt.Println("")
-		color.Cyan.Println("Chord base note, duration, and other alda code are not required. They provide extra features to all. It is good to note that pure Alda provides you with more flexibility")
-		color.Cyan.Println("Aldax provides you a bit of abstraction when it comes to chord notation")
+		color.Cyan.Println("-> Alda code and inversion are optional")
+		color.Cyan.Println("-> <chord> contains a capital letter denoting the chord tonic, followed by #, b, 7, etc. to specify the actual chord")
+		color.Cyan.Println("-> For each chord, you can optionally specify an inversion in brackets (1-4)")
+		color.Cyan.Println("-> The 1st <alda-code-optional> is prefixed to every note in the chord and the 2nd is suffixed to every note in the chord. You may use the 2nd <alda-code-optional> to specify the duration of every note played")
+		color.Cyan.Println("-> It is good to note that pure Alda provides you with more flexibility. Aldax provides you a bit of abstraction when it comes to chord notation")
+		color.Cyan.Println("Therefore, you can use all the features of Alda, but with a sugar coated abstraction for Chords!")
 		fmt.Println("")
 		color.LightGreen.Println("The chords supported are major, minor, dominant 7th, major 7th, minor 7th, diminished, diminished 7th, augmented, suspended 2 and suspended 4")
 		color.Gray.Println("chord examples...")
@@ -205,8 +205,9 @@ func getCmdLineArgs() bool {
 		color.LightGreen.Println("Suspended 4  : Fsus4, A#sus4, GM4")
 		fmt.Println()
 		color.Gray.Println("examples...")
-		color.Green.Println("Csus2/D/1/<d>     : This contains the major chord, with D as the base note, for a duration of 1 (Alda notation) and also has some Alda code at the end (<d>)")
+		color.Green.Println("Csus2(2)/1        : This contains the C suspended 2 chord in the second inversion, for a duration of 1 (Alda notation)")
 		color.Green.Println("C Am F G7         : This plays the classic <I vi IV V7> progression with C as tonic, at the default Alda duration")
+		color.Green.Println("Checkout https://github.com/haricane8133/aldax/blob/master/examples for more examples. (PRs for more examples welcome)")
 		fmt.Println()
 		color.Yellow.Println("*USAGE*")
 		color.Cyan.Println("1. Write your Alda song in a file, with Aldax chord syntax")
@@ -215,6 +216,7 @@ func getCmdLineArgs() bool {
 		fmt.Println()
 		color.Cyan.Println("To call the parser...")
 		color.Blue.Println("aldax <inputfilepath> <outputfilepath>")
+		color.Cyan.Println("example: aldax input.aldax output.alda && alda play --file output.alda")
 		fmt.Println()
 
 		return false

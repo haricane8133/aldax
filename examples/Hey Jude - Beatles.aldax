@@ -1,0 +1,29 @@
+(tempo! 92)
+
+# --> variables <--
+bass = << f8 f*7 e-*8 b-*8 f*8 >>
+chords = F/4 F F F Eb Eb Eb Eb Bb Bb Bb Bb F F F F
+lead = f2 a4 > c4     g16 f16 g8 f2.     g16 f16 g8 f2    d8 c8 c1 <
+wait = r2 r4 > r4     r16 r16 r8 r2.     r16 r16 r8 r2    r8 r8 r1 <
+
+# --> Instruments <--
+midi-electric-bass-pick:(vol 90)
+bass*4
+
+midi-acoustic-grand-piano:(vol 90)
+chords*4
+
+midi-fx-crystal:(vol 75)
+lead
+
+midi-orchestral-harp:(vol 75)
+wait
+lead
+
+midi-cello:(vol 75)
+wait*2
+lead
+
+midi-flute:(vol 80)
+wait*3
+lead

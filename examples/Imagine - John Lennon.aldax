@@ -1,0 +1,16 @@
+(tempo! 72)
+
+# --> variables <--
+riff = C C C CM7 F(1) F(1) F(1) F(1)
+riffmain = e8/g8 c8 e8/g8 c8 e8/g8 c8 b8 >c8< f8/a8 c8/f8 f8/a8 c8/f8 f8/a8 c8/f8 a16 a+16 b16 r16
+
+# --> instruments <--
+piano:
+<
+riff * 4
+C/1
+
+midi-bright-acoustic-piano:
+<
+riffmain * 4
+c1

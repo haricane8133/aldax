@@ -11,6 +11,9 @@ Aldax is a chord parser for the musical language Alda
 
 ```bash
 go install
+# This installs the Binary in the default $GOPATH/bin directory. If it is not in the path, add it
+    # If you use a Bash env, add this line to your bash profile (or zsh likewise)
+    # export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
 For people who do not want to go through the above hassle, download the releases from the releases tab
@@ -34,16 +37,14 @@ alda play --file < output-file-path>
 
 Each chord within the Aldax code file, is represented in the following format
 
-< other-alda-code>/< chord>/< chord-base-note>/< duration>/< other-alda-code>
+alda-code/chord(inversion)/alda-code
+* alda-code and inversion are optional. It is good to note that pure Alda provides you with more flexibility
+* Aldax provides you with an easy abstraction for chords
+* "chord" contains a capital letter denoting the chord tonic, followed by #, b, 7, etc. to specify the actual chord. Have a look at the chords supported for knowing what to use
+* For each chord, you can optionally specify an "inversion" in brackets (1-4)
+* The 1st <alda-code-optional> is prefixed to every note in the chord and the 2nd is suffixed to every note in the chord. You may use the 2nd <alda-code-optional> to specify the duration of every note played
 
-* < other-alda-code> denotes Alda code that does not indicate a chord, that you may want to chain up with the chord
-* < chord> denotes a chord
-* < chord-base-note> is used for chord inversions
-* < duration> is the Alda based duration for the whole chord
-
-Note: YOU NEED TO USE CAPITALS FOR THE "CHORD" AND THE "CHORD-BASE-NOTE". SEE THE EXAMPLES TO KNOW HOW
-
-"Chord base note", "duration", and "other alda code" are optional. They provide extra features to all. It is good to note that pure Alda provides you with more flexibility
+Note: YOU NEED TO USE CAPITALS FOR THE "CHORD". SEE THE EXAMPLES TO KNOW HOW
 
 The chord types supported here are major, minor, dominant 7th, major 7th, minor 7th, diminished, diminished 7th, augmented, suspended 2 and suspended 4. If you want more chords, then you are probably an expert who can tackle Alda directly XD
 
@@ -64,8 +65,8 @@ The chord types supported here are major, minor, dominant 7th, major 7th, minor 
 
 ### Full Syntax - aldax file contents
 
-#### Csus2/D/1/<d>
-This contains the major chord, with D as the base note, for a duration of 1 (Alda notation) and also has some Alda code at the end (< d>)
+#### Csus2(2)/1/
+This contains the C suspended 2 chord in the second inversion, for a duration of 1 (Alda notation)
 
 #### C Am F G7
 This plays the classic < I vi IV V7> progression with C as tonic, at the default Alda duration
