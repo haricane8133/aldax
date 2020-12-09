@@ -32,6 +32,10 @@ aldax input-file-path output-file-path
 alda play --file output-file-path
 ```
 
+## A How to Video
+Feel free to view the YouTube video
+    [How to use Aldax?](https://youtu.be/F9mE1id8ixM)
+It covers Installation and Usage from above
 
 ## Aldax chord Syntax
 
