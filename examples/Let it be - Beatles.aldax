@@ -1,0 +1,18 @@
+(tempo! 72)
+
+# --> variables <--
+bass1 = << c4 c4 < g4 g4 a4 a8 g8 f4 f4 > >>
+bass2 = << c4 c4 < g4 g4 f4 e8 d8 c2 > >>
+
+mainriff1 = C/4 C/4 < G/4 G/4 Am/4 Am/8 G/8 F/4 F/4 >
+mainriff2 = C/4 C/4 < G/4 G/4 F/4 e8/g8 d8/f8 C/2 >
+
+basssong = bass1 bass2
+mainsong = mainriff1 mainriff2
+
+# --> instruments <--
+midi-acoustic-bass:
+    basssong * 2
+
+piano:
+    mainsong * 2
