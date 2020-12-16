@@ -66,6 +66,8 @@ The chord types supported here are major, minor, dominant 7th, major 7th, minor 
 * Augmented    : Caug, B+
 * Suspended 2  : Fsus2, A#sus2, GM2
 * Suspended 4  : Fsus4, A#sus4, GM4
+* Major 6th    : G6, DM6, A#6
+* Minor 6th    : Gm6, Dm6, A#m6
 
 ### Full Syntax - aldax file contents
 

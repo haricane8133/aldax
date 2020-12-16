@@ -43,7 +43,7 @@ func main() {
 func process() bool {
 	// This is the Regular Expression that matches a chord on the ALDAX notation
 	// <alda-code-optional>/<chord>(inversion-optional)/<alda-code-optional>
-	var re = regexp.MustCompile(`^([^\sCDEFGAB]+)?([CDEFGAB][#b]?)(7|M[247]?|m7?|aug|\+|dim7?|o7?|sus[24])?(\([1-4]\))?(\/\S+)?$`)
+	var re = regexp.MustCompile(`^([^\sCDEFGAB]+)?([CDEFGAB][#b]?)(6|7|M[2467]?|m[67]?|aug|\+|dim7?|o7?|sus[24])?(\([1-4]\))?(\/\S+)?$`)
 	// This contains the output that must be written to the file
 	var outputFileContents string
 	// splitting the file contents by new line
@@ -139,6 +139,12 @@ func getChordFormula(chordType string) (bool, []int) {
 	case "4", "M4", "sus4":
 		// suspended 4
 		return true, []int{0, 5, 7}
+	case "6", "M6":
+		// Major 6th
+		return true, []int{0, 4, 7, 9}
+	case "m6":
+		// Minor 6th
+		return true, []int{0, 3, 7, 9}
 	default:
 		return false, nil
 	}
@@ -211,6 +217,8 @@ func getCmdLineArgs() bool {
 		color.LightGreen.Println("Augmented    : Caug, B+")
 		color.LightGreen.Println("Suspended 2  : Fsus2, A#sus2, GM2")
 		color.LightGreen.Println("Suspended 4  : Fsus4, A#sus4, GM4")
+		color.LightGreen.Println("Major 6th    : G6, DM6, A#6")
+		color.LightGreen.Println("Minor 6th    : Gm6, Dm6, A#m6")
 		fmt.Println()
 		color.Gray.Println("examples...")
 		color.Green.Println("Csus2(2)/1        : This contains the C suspended 2 chord in the second inversion, for a duration of 1 (Alda notation)")
