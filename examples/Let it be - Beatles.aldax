@@ -2,12 +2,14 @@
 
 # --> variables <--
 line1 = C/4 C/4 < G/4 G/4 Am/4 Am/8 g8 FM7/4 F6/4 >
-line2 = C/4 C/4 < G/4 G/4 F/4 e8/g8 d8/f8 C/1 >
-song = line1 line2
+line2 = C/4 C/4 < G/4 G/4 F/4 e8/g8 d8/f8 C/2 >
+line3 = < F/4 e8/g8 d8/f8 C/4 < Bb/8 Bb/8 > F/4 G/4 C/2 >
+song = line1 line2 line3 line3
 
-bass1 = << c4 c4 < g4 g4 a4 a8 g8 f4 f4 > >>
-bass2 = << c4 c4 < g4 g4 f4 e8 d8 c1 > >>
-bass = bass1 bass2
+bass1 = << c4 c4 < g4 g4 a4 a8 g8 f4 d4 > >>
+bass2 = << c4 c4 < g4 g4 f4 e8 d8 c2 > >>
+bass3 = <<< f4 e8 d8 c4 < b-8 b-8 > f4 g4 c2 >>>
+bass = bass1 bass2 bass3 bass3
 
 # --> instruments <--
 piano:

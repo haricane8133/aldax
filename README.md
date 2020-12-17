@@ -43,6 +43,8 @@ It covers Installation and Usage from above
 [Writing a song with Aldax](https://youtu.be/nvGb9fhiIFg)
 Tune in to watch how I write the intro of the song "Let it be" by The Beatles, in Alda, using the Chords syntax of Aldax
 
+To learn how to write songs in Alda, have a look at the wonderful article series by the Author of Alda, at https://blog.djy.io/writing-music-with-alda-1/
+
 ## Aldax chord Syntax
 
 Each chord within the Aldax code file, is represented in the following format
