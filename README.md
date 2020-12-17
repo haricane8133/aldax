@@ -40,6 +40,9 @@ Tells you a bit about what is Aldax and why you need it...
 [How to use Aldax?](https://youtu.be/F9mE1id8ixM)
 It covers Installation and Usage from above
 
+[Writing a song with Aldax](https://youtu.be/nvGb9fhiIFg)
+Tune in to watch how I write the intro of the song "Let it be" by The Beatles, in Alda, using the Chords syntax of Aldax
+
 ## Aldax chord Syntax
 
 Each chord within the Aldax code file, is represented in the following format
